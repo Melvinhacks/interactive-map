@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Taipei Day Trip Map</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <style>
+        #map { height: 600px; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>Taipei Day Trip Map</h1>
+    <div id="map"></div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([25.0330, 121.5654], 12); // Center on Taipei
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var geojsonData = {
+            "type": "FeatureCollection",
+            "features": [
+                { "type": "Feature", "properties": { "name": "Taipei 101", "category": "Attraction" }, "geometry": { "type": "Point", "coordinates": [121.5645, 25.0330] }},
+                { "type": "Feature", "properties": { "name": "Elephant Mountain", "category": "Hiking" }, "geometry": { "type": "Point", "coordinates": [121.5702, 25.0274] }},
+                { "type": "Feature", "properties": { "name": "National Palace Museum", "category": "Attraction" }, "geometry": { "type": "Point", "coordinates": [121.5480, 25.1055] }},
+                { "type": "Feature", "properties": { "name": "Beitou Hot Springs", "category": "Resort" }, "geometry": { "type": "Point", "coordinates": [121.4987, 25.1377] }},
+                { "type": "Feature", "properties": { "name": "Tamsui Old Street", "category": "Market" }, "geometry": { "type": "Point", "coordinates": [121.4440, 25.1758] }},
+                { "type": "Feature", "properties": { "name": "Shilin Night Market", "category": "Market" }, "geometry": { "type": "Point", "coordinates": [121.5250, 25.0880] }}
+            ]
+        };
+
+        L.geoJSON(geojsonData, {
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup("<b>" + feature.properties.name + "</b><br>" + feature.properties.category);
+            }
+        }).addTo(map);
+    </script>
+</body>
+</html>
